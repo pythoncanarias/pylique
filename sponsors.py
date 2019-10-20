@@ -20,7 +20,12 @@ def create_sponsor_cards(sponsor_information: list) -> list:
             {
                 "card": {
                     "title": sponsor['name'],
-                    "imageUri": BASE_URL + sponsor['logo']
+                    "imageUri": BASE_URL + sponsor['logo'],
+                    "buttons": [
+                        {
+                            "text": "prueba button"
+                        }
+                    ]
                 },
                 'platform': 'TELEGRAM',
             }

@@ -13,7 +13,7 @@ def get_tracks_information() -> object:
     return data
 
 
-def create_card(speaker_info: list) -> list:
+def create_card(speaker_info: object) -> object:
     return {
         "card": {
             "title": "{} {}.\n{}.\n\nComienzo:{}\n\nFin:{}\n\n".format(

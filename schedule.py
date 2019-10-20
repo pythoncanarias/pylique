@@ -13,20 +13,17 @@ def get_schedule_information() -> object:
     return data
 
 
-def create_speaker_cards(schedule_information: list) -> list:
-    speakers = []
-    for speaker in schedule_information['result']:
-        speakers.append(
-            {
+def create_card(speaker_info: object) -> object:
+    return {
                 "card": {
                     "title": "{} {}.\n{}.\n\nComienzo:{}\n\nFin:{}\n\n".format(
-                        speaker['speakers'][0]['name'],
-                        speaker['speakers'][0]['surname'],
-                        speaker['name'],
-                        speaker['start'],
-                        speaker['end']),
-                    "subtitle": speaker['description'],
-                    "imageUri": BASE_URL + speaker['speakers'][0]['photo'],
+                        speaker_info['speakers'][0]['name'],
+                        speaker_info['speakers'][0]['surname'],
+                        speaker_info['name'],
+                        speaker_info['start'],
+                        speaker_info['end']),
+                    "subtitle": speaker_info['description'],
+                    "imageUri": BASE_URL + speaker_info['speakers'][0]['photo'],
                     "buttons": [
                         {
                             "text": "prueba button"
@@ -35,7 +32,19 @@ def create_speaker_cards(schedule_information: list) -> list:
                 },
                 'platform': 'TELEGRAM',
             }
-        )
+def create_speaker_cards(schedule_information: list, speaker_schedule: list = []) -> list:
+    speakers = []
+    if len(speaker_schedule) == 0:
+        for speaker in schedule_information['result']:
+            speakers.append(create_card(speaker))
+    else:
+        for speaker in schedule_information['result']:
+            splited_name = speaker['speakers'][0]['name'].split()
+            splited_surname = speaker['speakers'][0]['surname'].split()
+            if speaker_schedule[0] in splited_name or \
+               speaker_schedule[0] in splited_surname or \
+               speaker['speakers'][0]['name'] + speaker['speakers'][0]['surname'] == speaker_schedule[0]:
+                speakers.append(create_card(speaker))
     return speakers
 
 
@@ -43,7 +52,11 @@ def schedule_action(req: object = None) -> object:
     """schedule action
     """
     schedule_information = get_schedule_information()
-    speaker_cards = create_speaker_cards(schedule_information)
+    if req['queryResult']['parameters']['speaker_entities']:
+        speaker_schedule = req['queryResult']['parameters']['speaker_entities']
+        speaker_cards = create_speaker_cards(schedule_information, speaker_schedule)
+    else:
+        speaker_cards = create_speaker_cards(schedule_information)
     result = {"fulfillmentMessages": []}
     for speaker_card in speaker_cards:
         result['fulfillmentMessages'].append(speaker_card)
