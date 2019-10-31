@@ -9,5 +9,5 @@ def deploy():
     local('git push')
     with cd('~/pylique'):
         run('git pull')
-        run('pipenv install')
+        run('pipenv install --skip-lock')
         run('supervisorctl restart pylique')
