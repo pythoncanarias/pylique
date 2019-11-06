@@ -4,6 +4,7 @@
 import os
 from flask import Flask
 from flask import request
+from help import help_action
 from welcome import welcome_action
 from schedule import schedule_action
 from sponsors import sponsors_action
@@ -13,6 +14,7 @@ app = Flask(__name__)
 log = app.logger
 
 actions = {
+    'help': help_action,
     'welcome': welcome_action,
     'schedule': schedule_action,
     'sponsors': sponsors_action,
