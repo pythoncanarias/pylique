@@ -26,7 +26,7 @@ def create_card(speaker_info: object) -> object:
                     "imageUri": BASE_URL + speaker_info['speakers'][0]['photo'],
                     "buttons": [
                         {
-                            "text": "prueba button"
+                            "text": f"{speaker_info['speakers'][0]['name']} {speaker_info['speakers'][0]['surname']}"
                         }
                     ]
                 },
